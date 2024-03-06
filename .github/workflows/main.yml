@@ -1,0 +1,84 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '19'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build the Docker image
+        run: docker build -t section4-docker-image-prod . .
+
+  unit-test:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '19'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run unit tests
+        run: npm test
+
+  integration-test:
+    runs-on: ubuntu-latest
+
+    needs: unit-test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        uses: docker/compose-cli-action@v0.2.0
+        with:
+          compose-file: docker-compose.test.yml
+
+      - name: Deploy to testing environment
+        run: docker compose up -d
+
+      - name: Run integration tests
+        run: |
+          # Add commands to run integration tests
+          # For example, you may use tools like Cypress or Selenium
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+
+    needs: integration-test
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker Compose
+        uses: docker/compose-cli-action@v0.2.0
+        with:
+          compose-file: docker-compose.staging.yml
+
+      - name: Deploy to staging environment
+        run: docker compose up -d
