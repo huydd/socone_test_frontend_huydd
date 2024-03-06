@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Build the Docker image
-        run: docker build -t section4-docker-image-prod . .
+        run: docker build -t section4-docker-image-prod .
 
   unit-test:
     runs-on: ubuntu-latest
