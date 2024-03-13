@@ -68,6 +68,7 @@ const NewTask = () => {
                 Title*:
                 <input
                   placeholder="Enter title..."
+                  data-testid="task-title"
                   className="w-full h-10 border  border-slate-400 rounded-md p-3"
                   onChange={onChange("title")}
                 />
@@ -79,6 +80,7 @@ const NewTask = () => {
                 <textarea
                   rows={4}
                   placeholder="Enter descriptions..."
+                  data-testid="task-description"
                   className="w-full h-30 border border-slate-400 rounded-md p-3"
                   onChange={onChange("description")}
                 />
