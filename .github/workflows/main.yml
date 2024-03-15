@@ -42,7 +42,7 @@ jobs:
         run: npm install
 
       - name: Run unit tests
-        run: npm test --passWithNoTests
+        run: npm test
 
   integration-test:
     runs-on: ubuntu-latest
@@ -53,13 +53,13 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up Docker Compose
-        uses: docker/compose-cli-action@v0.2.0
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          compose-file: docker-compose.test.yml
+          node-version: '19'
 
-      - name: Deploy to testing environment
-        run: docker compose up -d
+      - name: Install dependencies
+        run: npm install
 
       - name: Run integration tests
         run: npm test
