@@ -62,9 +62,7 @@ jobs:
         run: docker compose up -d
 
       - name: Run integration tests
-        run: |
-          # Add commands to run integration tests
-          # For example, you may use tools like Cypress or Selenium
+        run: npm test
 
   deploy-staging:
     runs-on: ubuntu-latest
